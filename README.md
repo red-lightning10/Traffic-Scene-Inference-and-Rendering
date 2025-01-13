@@ -1,4 +1,4 @@
-# README
+# README (Check Report for additional details)
 
 # Packages used:
 
@@ -58,5 +58,5 @@
 		
 	We used the RAFT model to estimate the optical flow between 2 images. Once, we obtain the flow image, we project the reproject the 1st image on the 2nd image to look for correspondences and estimate the Fundamental Matrix. Then, we use Sampson distance between the reprojected point.
 
-# Check Report for additional details
+
 	
