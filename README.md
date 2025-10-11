@@ -229,8 +229,36 @@ Where `fx`, `fy` are focal lengths and `cx`, `cy` are principal point offsets.
 
 ## Example Output
 
-*[Add sample rendered images showing before/after comparison]*
+### Demo Video
+Watch the complete pipeline in action: [Traffic Scene Inference and Rendering Demo](https://drive.google.com/file/d/1r7AE2kVGiakutazpgVZX1ysp11ENY-54/view)
 
+### Model Pipeline Results
+
+#### 1. YOLO Object Detection
+![YOLO Object Detection](Pictures/yolo.jpg)
+*YOLO detection results showing bounding boxes around vehicles, pedestrians, and traffic signs*
+
+#### 2. DETIC Vehicle Classification  
+![DETIC Vehicle Classification](Pictures/detic.jpg)
+*DETIC results showing vehicle type classification (sedan, SUV, truck, bus), with other objects*
+
+#### 3. Mask R-CNN Lane Detection
+![Mask R-CNN Lane Detection](Pictures/rcnn.jpg)
+*Mask R-CNN results showing lane segmentation masks*
+
+#### 4. RAFT Optical Flow Analysis
+![RAFT Input](Pictures/input-raft.jpg)
+![RAFT Blender Visualization](Pictures/blender-op-flow.png)
+![RAFT Direction Arrows](Pictures/optical-flow-arrow.png)
+*RAFT optical flow analysis: input frame, Blender visualization, and top view showing vehicle direction arrows*
+
+#### 5. I2L-MeshNet Human Pose Estimation
+![I2L-MeshNet Input](Pictures/input-frame.jpg)
+![I2L-MeshNet Pose](Pictures/i2lmesh.jpg)
+![I2L-MeshNet Blender Output](Pictures/output-blender.png)
+*I2L-MeshNet human pose estimation: input frame, pose estimation, and 3D human mesh rendered in Blender*
+
+### Complete Pipeline Output
 The rendered scenes include:
 - Accurately positioned vehicles with correct 3D orientation
 - Photorealistic human meshes in natural poses
