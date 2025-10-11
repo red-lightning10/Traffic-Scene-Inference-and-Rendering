@@ -4,7 +4,7 @@ An end-to-end pipeline that renders 2D car dashcam footage in Blender. The syste
 
 > **⚠️ Current Limitation**: This pipeline currently processes individual frames only. You must manually extract frames from your video before running the pipeline. Future versions may support seamless video input for any footage.
 
-## 🎯 Project Overview
+## Project Overview
 
 This project implements a three-layer pipeline:
 1. **ML Layer**: Specialized models extract objects, depth, orientation, lanes, and human poses
@@ -13,7 +13,7 @@ This project implements a three-layer pipeline:
 
 The pipeline handles diverse traffic elements including vehicles, pedestrians, traffic signals, road signs, lane markings, and road infrastructure.
 
-## 🏗️ Architecture
+## Architecture
 
 ```
 Input Video → ML Models → Data Processing → Blender Rendering → 3D Scene Output
@@ -28,7 +28,7 @@ Input Video → ML Models → Data Processing → Blender Rendering → 3D Scene
 - Traffic Sign Detection (YOLOv5)
 - Optical Flow (RAFT)
 
-## 📋 Prerequisites
+## Prerequisites
 
 ### Software Requirements
 - Python 3.8+
@@ -37,9 +37,7 @@ Input Video → ML Models → Data Processing → Blender Rendering → 3D Scene
 
 ### Python Dependencies
 ```bash
-pip install ultralytics torch torchvision
-pip install opencv-python numpy scipy
-pip install trimesh matplotlib pillow
+pip install -r requirements.txt
 ```
 
 ### Model Weights
@@ -55,11 +53,11 @@ Download pre-trained weights for:
 - RAFT (KITTI weights)
 
 ### Required Data Files
-- Camera calibration matrix: `Data/Calib/K_front.csv`
-- 3D asset models: `Data/Assets/obj/` (Car.obj, Truck.obj, Bus.obj, etc.)
 - Model weights: Download from respective submodule repositories
+- Camera calibration matrix: Create `Data/Calib/K_front.csv` with your camera's intrinsic matrix
+- 3D asset models: Create `Data/Assets/obj/` directory with vehicle models (Car.obj, Truck.obj, Bus.obj, etc.)
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 Traffic-Scene-Inference-and-Rendering/
@@ -83,20 +81,17 @@ Traffic-Scene-Inference-and-Rendering/
 │   ├── YOLOv9/                     # Object detection submodule
 │   └── RAFT/                       # Optical flow submodule
 ├── README.md                       # Main documentation
-├── SIMPLE_README.md                # Simple usage guide
-├── SUBMODULE_README.md             # Submodule guide
 ├── requirements.txt                # Dependencies
-├── setup_submodules.py             # Setup script
 ├── LICENSE                         # License
-└── Report.pdf                      # Project report
+└── Presentation.pdf                # Project presentation
 ```
 
-## 🚀 How to Run
+## How to Run
 
 ### Quick Start
 ```bash
 # Setup submodules
-python setup_submodules.py
+git submodule update --recursive
 
 # Install dependencies
 pip install -r requirements.txt
@@ -121,19 +116,19 @@ blender --background --python Blender/blender_script.py -- \
     --output /path/to/output
 ```
 
-## 🤖 Model Details
+## Model Details
 
 | Model | Purpose | Dataset | Output Format | Status |
 |-------|---------|---------|---------------|--------|
-| **YOLOv9** | Object detection (cars, pedestrians, signals, signs) | MSCOCO | TXT | ✅ Stable |
-| **Marigold** | Metric depth estimation | Diverse datasets | NPY | ✅ Stable |
-| **YOLO3D** | 3D bounding boxes & vehicle orientation (yaw) | MSCOCO, KITTI | PKL | ✅ Stable |
-| **Detic** | Vehicle classification (sedan, SUV, truck, bus, etc.) | COCO, OpenImages | PKL | ✅ Stable |
-| **I2L-MeshNet** | 3D human pose & mesh generation | Human3.6M, MSCOCO, MuCO | OBJ | ✅ Stable |
-| **Mask R-CNN** | Lane segmentation (solid, dotted, dividers) | Road Lane Dataset | PKL | ⚠️ Efficiency concerns |
-| **YOLOv8** | Traffic light color & arrow classification | TrafficLight-Detector | TXT | ✅ Stable |
-| **YOLOv5** | Traffic sign detection (speed limits, crosswalks) | Custom (535 images) | TXT | ⚠️ Needs improvement |
-| **RAFT** | Optical flow for camera motion estimation | KITTI | NPY | ✅ Stable |
+| **YOLOv9** | Object detection (cars, pedestrians, signals, signs) | MSCOCO | TXT | Stable |
+| **Marigold** | Metric depth estimation | Diverse datasets | NPY | Stable |
+| **YOLO3D** | 3D bounding boxes & vehicle orientation (yaw) | MSCOCO, KITTI | PKL | Stable |
+| **Detic** | Vehicle classification (sedan, SUV, truck, bus, etc.) | COCO, OpenImages | PKL | Stable |
+| **I2L-MeshNet** | 3D human pose & mesh generation | Human3.6M, MSCOCO, MuCO | OBJ | Stable |
+| **Mask R-CNN** | Lane segmentation (solid, dotted, dividers) | Road Lane Dataset | PKL | Efficiency concerns |
+| **YOLOv8** | Traffic light color & arrow classification | TrafficLight-Detector | TXT | Stable |
+| **YOLOv5** | Traffic sign detection (speed limits, crosswalks) | Custom (535 images) | TXT | Needs improvement |
+| **RAFT** | Optical flow for camera motion estimation | KITTI | NPY | Stable |
 
 ### Model Details
 
@@ -193,7 +188,7 @@ blender --background --python Blender/blender_script.py -- \
 - Estimates optical flow between consecutive frames
 - Used for correspondence matching and fundamental matrix estimation via Sampson distance
 
-## ⚙️ Configuration
+## Configuration
 
 ### Key Parameters in `Blender/blender_script.py`
 
@@ -216,7 +211,7 @@ OUTPUT_RESOLUTION = (1920, 1080)
 
 ### Camera Calibration
 
-Update `Data/Calib/K_front.csv` with your camera's intrinsic matrix:
+Create `Data/Calib/K_front.csv` with your camera's intrinsic matrix:
 ```
 fx, 0,  cx
 0,  fy, cy
@@ -225,14 +220,14 @@ fx, 0,  cx
 
 Where `fx`, `fy` are focal lengths and `cx`, `cy` are principal point offsets.
 
-## ⚠️ Known Limitations
+## Known Limitations
 
 1. **Lane Detection Efficiency**: Mask R-CNN is computationally expensive; exploring YOLOP v2 alternatives
 2. **Traffic Sign Accuracy**: YOLOv5 model trained on only 535 images; poor generalization to diverse signs
 3. **Scene-Specific Calibration**: Scale factors and camera parameters require manual tuning per dataset
 4. **Processing Speed**: Full pipeline can take several hours for long videos
 
-## 🎨 Example Output
+## Example Output
 
 *[Add sample rendered images showing before/after comparison]*
 
@@ -243,7 +238,7 @@ The rendered scenes include:
 - Functioning traffic lights and signs
 - Depth-accurate scene layout
 
-## 🔄 Future Improvements
+## Future Improvements
 
 - [ ] Replace Mask R-CNN with YOLOP v2 for faster lane detection
 - [ ] Train YOLOv5 on larger traffic sign dataset (target: 5000+ images)
@@ -251,20 +246,20 @@ The rendered scenes include:
 - [ ] Add support for multiple camera angles
 - [ ] Real-time rendering optimization
 
-## 📄 License
+## License
 
 Apache License 2.0
 
-## 👥 Contributors
+## Contributors
 
 - Niranjan Kumar Ilampooranan
 - Thanikai Adhithiyan Shanmugam
 
-## 📚 References
+## References
 
 See individual model repositories linked in the Model Details section above.
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
 This project builds upon the excellent work of:
 - Ultralytics (YOLO family)
@@ -272,7 +267,8 @@ This project builds upon the excellent work of:
 - I2L-MeshNet authors
 - Princeton Vision Lab (RAFT)
 - Facebook Research (Detic)
+- PEAR Lab (WPI) - RBE549 (Course Instructor: Prof. Nitin Sanket)
 
 ---
 
-**Note**: Check the [project presentation deck](./docs/presentation.pdf) for additional details and results.
+**Note**: Check the [project presentation](./Presentation.pdf) for additional details and results.
