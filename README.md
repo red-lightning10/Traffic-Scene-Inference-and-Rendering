@@ -116,20 +116,6 @@ blender --background --python Blender/blender_script.py -- \
     --output /path/to/output
 ```
 
-## Model Details
-
-| Model | Purpose | Dataset | Output Format | Status |
-|-------|---------|---------|---------------|--------|
-| **YOLOv9** | Object detection (cars, pedestrians, signals, signs) | MSCOCO | TXT | Stable |
-| **Marigold** | Metric depth estimation | Diverse datasets | NPY | Stable |
-| **YOLO3D** | 3D bounding boxes & vehicle orientation (yaw) | MSCOCO, KITTI | PKL | Stable |
-| **Detic** | Vehicle classification (sedan, SUV, truck, bus, etc.) | COCO, OpenImages | PKL | Stable |
-| **I2L-MeshNet** | 3D human pose & mesh generation | Human3.6M, MSCOCO, MuCO | OBJ | Stable |
-| **Mask R-CNN** | Lane segmentation (solid, dotted, dividers) | Road Lane Dataset | PKL | Efficiency concerns |
-| **YOLOv8** | Traffic light color & arrow classification | TrafficLight-Detector | TXT | Stable |
-| **YOLOv5** | Traffic sign detection (speed limits, crosswalks) | Custom (535 images) | TXT | Needs improvement |
-| **RAFT** | Optical flow for camera motion estimation | KITTI | NPY | Stable |
-
 ### Model Details
 
 #### 1. Lane Detection - Mask R-CNN
