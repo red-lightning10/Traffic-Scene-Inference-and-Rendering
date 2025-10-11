@@ -1,0 +1,36 @@
+[submodule "Models/YOLO3D"]
+	path = Models/YOLO3D
+	url = https://github.com/ruhyadi/YOLO3D.git
+[submodule "Models/Marigold"]
+	path = Models/Marigold
+	url = https://github.com/prs-eth/marigold.git
+[submodule "Models/Detic"]
+	path = Models/Detic
+	url = https://github.com/facebookresearch/Detic.git
+[submodule "Models/YOLOv9"]
+	path = Models/YOLOv9
+	url = https://github.com/WongKinYiu/yolov9.git
+[submodule "Models/RAFT"]
+	path = Models/RAFT
+	url = https://github.com/princeton-vl/RAFT.git
+[submodule "Models/Models/TrafficLight"]
+	path = Models/Models/TrafficLight
+	url = https://github.com/Syazvinski/Traffic-Light-Detection-Color-Classification.git
+[submodule "Models/Models/TrafficSign"]
+	path = Models/Models/TrafficSign
+	url = https://github.com/Anant-mishra1729/Road-sign-detection.git
+[submodule "Models/Models/MaskRCNN"]
+	path = Models/Models/MaskRCNN
+	url = https://github.com/facebookresearch/maskrcnn-benchmark.git
+[submodule "Models/MaskRCNN"]
+	path = Models/MaskRCNN
+	url = https://github.com/facebookresearch/maskrcnn-benchmark.git
+[submodule "Models/TrafficLight"]
+	path = Models/TrafficLight
+	url = https://github.com/Syazvinski/Traffic-Light-Detection-Color-Classification.git
+[submodule "Models/TrafficSign"]
+	path = Models/TrafficSign
+	url = https://github.com/Anant-mishra1729/Road-sign-detection.git
+[submodule "Models/I2LMeshNet"]
+	path = Models/I2LMeshNet
+	url = https://github.com/mks0601/I2L-MeshNet_RELEASE.git
