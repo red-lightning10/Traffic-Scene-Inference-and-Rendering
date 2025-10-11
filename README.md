@@ -57,104 +57,68 @@ Download pre-trained weights for:
 ### Required Data Files
 - Camera calibration matrix: `Data/Calib/K_front.csv`
 - 3D asset models: `Data/Assets/obj/` (Car.obj, Truck.obj, Bus.obj, etc.)
+- Model weights: Download from respective submodule repositories
 
 ## 📁 Project Structure
 
 ```
 Traffic-Scene-Inference-and-Rendering/
-├── Models/                      # ML model inference scripts
-│   ├── yolov9_inference.py
-│   ├── marigold_depth.py
-│   ├── yolo3d_inference.py
-│   ├── i2l_meshnet_inference.py
-│   ├── detic_inference.py
-│   └── ...
-├── Blender/
-│   ├── utils/                   # Data processing utilities
-│   │   ├── txt2json.py         # YOLO output converter
-│   │   ├── GetObjectLocation.py # Pixel-to-world transform
-│   │   ├── ExtractLaneData.py  # Lane Bézier curve extraction
-│   │   └── ...
-│   ├── blender_script.py        # Main rendering script
-│   └── demo/
-│       └── RunBash.sh           # Human mesh generation wrapper
-├── Data/
-│   ├── Calib/                   # Camera calibration files
-│   │   └── K_front.csv
-│   ├── Assets/
-│   │   └── obj/                 # 3D models (vehicles, signs, etc.)
-│   └── Input/                   # Input video frames
-├── Output/                      # Rendered scene outputs
-│   └── render_scene*.png
-└── README.md
+├── Blender/                        # Blender integration
+│   ├── blender_script.py           # Main Blender script
+│   ├── demo/                       # Demo files
+│   └── utils/                      # Blender utilities
+├── Models/                         # All ML models
+│   ├── scripts/                    # Executable scripts
+│   │   ├── lane_detection.py       # Lane detection
+│   │   ├── lane_utils.py           # Lane utilities
+│   │   ├── motion_detection.py     # Motion detection
+│   │   └── run_I2LMeshNet.py       # Human pose
+│   ├── I2LMeshNet/                 # Human pose submodule
+│   ├── MaskRCNN/                   # Lane detection submodule
+│   ├── TrafficLight/               # Traffic light submodule
+│   ├── TrafficSign/                # Traffic sign submodule
+│   ├── YOLO3D/                     # 3D object detection submodule
+│   ├── Marigold/                   # Depth estimation submodule
+│   ├── Detic/                      # Vehicle classification submodule
+│   ├── YOLOv9/                     # Object detection submodule
+│   └── RAFT/                       # Optical flow submodule
+├── README.md                       # Main documentation
+├── SIMPLE_README.md                # Simple usage guide
+├── SUBMODULE_README.md             # Submodule guide
+├── requirements.txt                # Dependencies
+├── setup_submodules.py             # Setup script
+├── LICENSE                         # License
+└── Report.pdf                      # Project report
 ```
 
 ## 🚀 How to Run
 
-### Step 1: Prepare Input Data
+### Quick Start
 ```bash
-# Extract video frames
-mkdir Data/Input/frames
-ffmpeg -i your_video.mp4 Data/Input/frames/frame_%04d.png
+# Setup submodules
+python setup_submodules.py
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Run individual models
+cd Models/scripts
+python lane_detection.py -i /path/to/images -o /path/to/output
+python motion_detection.py --input_dir /path/to/frames --output_dir /path/to/output
+python run_I2LMeshNet.py --input /path/to/image.jpg --bbox "100,100,200,300"
+
+# Or go directly to submodules
+cd Models/YOLO3D && python inference.py --weights weights/yolov5s.pt --source data/input
+cd Models/Marigold && python -m marigold --input data/input --output data/output
 ```
 
-### Step 2: Run ML Model Inference
-
-Execute each model's inference script on your video frames. 
-
-**Note**: The models are currently run separately (some via notebooks, some via scripts). We are working to unify all models into a single seamless pipeline that generates all inferences in one pass.
-
-For now, run each model individually on your input frames and ensure outputs are saved in the appropriate formats:
-
-**Expected Output Formats:**
-- YOLO models (YOLOv9, YOLOv8, YOLOv5): `.txt` (YOLO format)
-- Detic, Mask R-CNN: `.pkl` (Python pickle)
-- Marigold: `.npy` (NumPy arrays)
-- I2L-MeshNet: `.obj` (Wavefront OBJ meshes)
-- RAFT: `.npy` (NumPy arrays)
-
-### Step 3: Data Processing
-
-Convert model outputs to Blender-ready format:
-
+### Blender Rendering
 ```bash
-# Convert YOLO detections to unified JSON format
-python Blender/utils/txt2json.py --input Output/yolo_detections.txt --output Output/detections.json
-
-# Transform pixel coordinates to world coordinates using depth and calibration
-python Blender/utils/GetObjectLocation.py \
-    --detections Output/detections.json \
-    --depth Output/depth_maps.npy \
-    --calib Data/Calib/K_front.csv \
-    --output Output/world_coords.json
-
-# Extract lane Bézier curve parameters
-python Blender/utils/ExtractLaneData.py \
-    --masks Output/lane_masks.pkl \
-    --output Output/lane_curves.json
-
-# Generate human mesh batch
-bash Blender/demo/RunBash.sh Output/human_meshes/ Output/processed_humans/
-```
-
-### Step 4: Render in Blender
-
-```bash
-# Run Blender in headless mode with rendering script
+# Run Blender script
 blender --background --python Blender/blender_script.py -- \
-    --objects Output/world_coords.json \
-    --lanes Output/lane_curves.json \
-    --humans Output/processed_humans/ \
-    --assets Data/Assets/obj/ \
-    --output Output/
-```
-
-The script processes 500 frames per batch and outputs rendered scenes to `Output/render_scene_####.png`.
-
-### Step 5: Create Output Video (Optional)
-
-```bash
-ffmpeg -framerate 30 -i Output/render_scene_%04d.png -c:v libx264 -pix_fmt yuv420p output_video.mp4
+    --scene_name my_scene \
+    --data_path /path/to/data.txt \
+    --output /path/to/output
 ```
 
 ## 🤖 Model Details
@@ -311,4 +275,4 @@ This project builds upon the excellent work of:
 
 ---
 
-**Note**: Check the [project report](./docs/report.pdf) for additional technical details and experimental results.
+**Note**: Check the [project presentation deck](./docs/presentation.pdf) for additional details and results.
