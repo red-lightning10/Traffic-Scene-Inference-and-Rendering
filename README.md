@@ -1,13 +1,13 @@
 # Traffic Scene Inference and Rendering
 
-An end-to-end pipeline that converts 2D traffic surveillance video into photorealistic 3D Blender scenes using a multi-model machine learning approach. The system processes video frames through 9 specialized ML models to extract scene understanding, then reconstructs and renders complete 3D traffic environments.
+An end-to-end pipeline that renders 2D car dashcam footage in Blender. The system processes video frames through multiple ML models to extract scene understanding, then reconstructs and renders complete 3D traffic environments.
 
 > **⚠️ Current Limitation**: This pipeline currently processes individual frames only. You must manually extract frames from your video before running the pipeline. Future versions may support seamless video input for any footage.
 
 ## 🎯 Project Overview
 
 This project implements a three-layer pipeline:
-1. **ML Layer**: 9 specialized models extract objects, depth, orientation, lanes, and human poses
+1. **ML Layer**: Specialized models extract objects, depth, orientation, lanes, and human poses
 2. **Data Processing Layer**: Transforms pixel-space detections into world-space 3D coordinates
 3. **Rendering Layer**: Reconstructs and renders photorealistic scenes in Blender
 
@@ -289,11 +289,12 @@ The rendered scenes include:
 
 ## 📄 License
 
-*[Add your license information]*
+Apache License 2.0
 
 ## 👥 Contributors
 
-*[Add contributor information]*
+- Niranjan Kumar Ilampooranan
+- Thanikai Adhithiyan Shanmugam
 
 ## 📚 References
 
